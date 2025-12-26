@@ -31,12 +31,12 @@ cd energy_monitor
 ---
 
 ### 2. Backend
-cd backend
+cd backend  
 
-#### 2.1 База данных postgreSQL
-1.1. Установить с официального сайта postgreSQL 18.
-1.2. Для пользователя postgres установить пароль 'admin437'.
-1.3. Инициализация бд: psql -U postgres -f db_init.sql
+#### 2.1 База данных postgreSQL  
+1.1. Установить с официального сайта postgreSQL 18.  
+1.2. Для пользователя postgres установить пароль 'admin437'.  
+1.3. Инициализация бд: psql -U postgres -f db_init.sql  
 
 
 cd backend  
