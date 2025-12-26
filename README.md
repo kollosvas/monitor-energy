@@ -1,4 +1,4 @@
-# 🏠 Система мониторинга энергопотерь
+<img width="1057" height="1781" alt="image" src="https://github.com/user-attachments/assets/00ef726f-88a8-42e2-a66e-b4efd892a2d0" /># 🏠 Система мониторинга энергопотерь
 
 Система управления умным домом с поддержкой расписания для розеток и анализом энергопотребления.  
 Проект состоит из **Django backend** и **React frontend**.    
@@ -92,9 +92,14 @@ DELETE /api/schedules/{id}/
 
 ---
 ### ПРИМЕРЫ РАБОТЫ:
-<img width="1077" height="1793" alt="image" src="https://github.com/user-attachments/assets/e4a0300f-45a9-40db-a08e-7641eee49598" />
+<img width="1057" height="1781" alt="image" src="https://github.com/user-attachments/assets/19f47327-614f-4239-9d2c-024ce1239046" />
+
+<img width="1055" height="1786" alt="image" src="https://github.com/user-attachments/assets/39d80d2f-9907-4ccd-a379-cec8652df0e1" />
+
 <img width="1075" height="1793" alt="image" src="https://github.com/user-attachments/assets/6ee20be8-dcb4-4b10-b665-ca15b73219ff" />
+
 <img width="1074" height="1792" alt="image" src="https://github.com/user-attachments/assets/2ad3398b-8301-4604-9c14-4634172e7e48" />
+
 <img width="1073" height="1793" alt="image" src="https://github.com/user-attachments/assets/96ca9ec3-ade9-4a03-a1a2-190d431178cd" />
 
 ---
