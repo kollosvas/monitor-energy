@@ -43,10 +43,10 @@ cd backend
 python -m venv venv  
 venv\Scripts\activate       (Windows)  
 source venv/bin/activate    (Linux/macOS)  
-pip install -r requirements.txt 
+pip install -r requirements.txt  
 
-python manage.py makemigrations devices
-python manage.py makemigrations energy
+python manage.py makemigrations devices  
+python manage.py makemigrations energy  
 python manage.py migrate  
 
 python manage.py createsuperuser
