@@ -25,7 +25,7 @@ Frontend:
 
 ### 1. Клонирование репозитория
 
-git clone https://github.com/kollosvas/energy_monitor.git 
+git clone https://github.com/kollosvas/monitor-energy.git 
 cd energy_monitor
 
 ---
@@ -68,7 +68,7 @@ source venv/bin/activate    (Linux/macOS)
 ### 3. Frontend
 Скачать и установить node.js
 
-cd ../frontend  
+cd ../frontend/energy-monitor-frontend
 npm install -g serve
 
 serve -s build 
