@@ -1,7 +1,7 @@
 # 🏠 Система мониторинга энергопотерь
 
 Система управления умным домом с поддержкой расписания для розеток и анализом энергопотребления.  
-Проект состоит из **Django backend** и **React frontend**.
+Проект состоит из **Django backend** и **React frontend**.    
 
 Находится на стадии **разработки**
 
@@ -25,7 +25,7 @@ Frontend:
 
 ### 1. Клонирование репозитория
 
-git clone https://github.com/kollosvas/monitor-energy.git 
+git clone https://github.com/kollosvas/monitor-energy.git  
 cd energy_monitor
 
 ---
@@ -56,9 +56,9 @@ python manage.py generate_sample_data
 (venv) python manage.py runserver  
 → http://localhost:8000
 
-В новом терминале (для генерации данных):
+В новом терминале (для генерации данных):    
 
-cd backend
+cd backend  
 venv\Scripts\activate       (Windows)  
 source venv/bin/activate    (Linux/macOS)  
 (venv) python manage.py generate_realtime_data
@@ -66,12 +66,12 @@ source venv/bin/activate    (Linux/macOS)
 ---
 
 ### 3. Frontend
-Скачать и установить node.js
+Скачать и установить node.js  
 
-cd ../frontend/energy-monitor-frontend
-npm install -g serve
+cd ../frontend/energy-monitor-frontend  
+npm install -g serve    
 
-serve -s build 
+serve -s build  
 
 → http://localhost:3000
 
