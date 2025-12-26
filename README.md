@@ -68,7 +68,7 @@ source venv/bin/activate    (Linux/macOS)
 ### 3. Frontend
 Скачать и установить node.js
 
-cd ../frontend  
+cd ../frontend/energy-monitor-frontend
 npm install -g serve
 
 serve -s build 
