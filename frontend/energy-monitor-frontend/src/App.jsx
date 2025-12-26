@@ -8,6 +8,8 @@ import RealTimeAnalytics from './components/Analytics/RealTimeAnalytics';
 import HistoricalData from './components/Analytics/HistoricalData';
 import Schedule from './components/Analytics/Schedule';
 import { devicesAPI, energyAPI } from './services/api';
+import AddDeviceModal from './components/AddDeviceModal';
+
 
 function App() {
   const [devices, setDevices] = useState([]);
@@ -22,6 +24,9 @@ function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
+
 
   const fetchData = async () => {
     try {
@@ -54,6 +59,27 @@ function App() {
       setLoading(false);
     }
   };
+
+
+  const handleAddDeviceClick = () => {
+    setIsAddModalOpen(true);
+  };
+
+  const handleCreateDevice = async (data) => {
+    try {
+      setAddLoading(true);
+      setError(null);
+      await devicesAPI.create(data);
+      await fetchData();
+      setIsAddModalOpen(false);
+    } catch (err) {
+      console.error('Ошибка при добавлении устройства:', err);
+      setError('Ошибка при добавлении устройства');
+    } finally {
+      setAddLoading(false);
+    }
+  };
+
 
   const handleToggleDevice = async (deviceId) => {
     try {
@@ -144,8 +170,10 @@ function App() {
             <DeviceGrid
               devices={devices}
               onToggleDevice={handleToggleDevice}
+              onAddDevice={handleAddDeviceClick}
               loading={loading}
             />
+
           </>
         )}
 
@@ -163,6 +191,12 @@ function App() {
           Последнее обновление: {new Date().toLocaleTimeString('ru-RU')}
         </span>
       </footer>
+      <AddDeviceModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSubmit={handleCreateDevice}
+        loading={addLoading}
+      />
     </div>
   );
 }

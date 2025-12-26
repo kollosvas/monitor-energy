@@ -1033,3 +1033,105 @@ body {
   }
 }
 
+/* Карточка добавления устройства */
+.add-device-card {
+  border: 2px dashed var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+.add-device-card:hover {
+  background: rgba(102, 126, 234, 0.04);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.add-device-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-device-plus {
+  font-size: 32px;
+  line-height: 1;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.add-device-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Кнопка в пустом состоянии */
+.add-device-button {
+  margin-top: 16px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.add-device-button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.add-device-modal {
+  max-width: 600px;
+  width: 90%;
+}
+
+.add-device-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 230px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95em;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+

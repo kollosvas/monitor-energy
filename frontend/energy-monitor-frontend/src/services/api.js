@@ -44,4 +44,5 @@ export const energyAPI = {
   getExportData: (format) => api.get(`/energy/export/?format=${format}`),
 };
 
+
 export default api;
