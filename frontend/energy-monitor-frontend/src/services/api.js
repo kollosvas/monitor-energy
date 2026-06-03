@@ -45,4 +45,13 @@ export const energyAPI = {
 };
 
 
+// Anomaly & Savings API
+export const anomalyAPI = {
+  getAnomalies: () => api.get('/energy/anomalies/'),
+  detectAnomalies: () => api.post('/energy/detect_anomalies/'),
+  resolveAnomaly: (id) => api.post('/energy/resolve_anomaly/', { anomaly_id: id }),
+  getScenarios: (implemented) => api.get(`/energy/saving_scenarios/${implemented ? '?implemented=true' : ''}`),
+  generateScenarios: () => api.post('/energy/generate_scenarios/'),
+};
+
 export default api;

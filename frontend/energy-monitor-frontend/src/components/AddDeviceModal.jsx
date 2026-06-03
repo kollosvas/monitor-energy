@@ -24,9 +24,9 @@ function AddDeviceModal({ isOpen, onClose, onSubmit, loading }) {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await onSubmit(form);
+  const handleSubmit = (e) => {
+    if (e) e.preventDefault();
+    onSubmit(form);
   };
 
   return (
@@ -132,26 +132,26 @@ function AddDeviceModal({ isOpen, onClose, onSubmit, loading }) {
               />
             </div>
           </div>
-        </form>
 
-        <div className="modal-footer">
-          <button
-            type="button"
-            className="btn-toggle btn-off"
-            onClick={onClose}
-            disabled={loading}
-          >
-            Отмена
-          </button>
-          <button
-            type="submit"
-            form="add-device-form"
-            className="btn-toggle btn-on"
-            disabled={loading}
-          >
-            {loading ? 'Сохранение...' : 'Сохранить'}
-          </button>
-        </div>
+          <div className="modal-footer" style={{ padding: 0, border: 'none' }}>
+            <button
+              type="button"
+              className="btn-toggle btn-off"
+              onClick={onClose}
+              disabled={loading}
+            >
+              Отмена
+            </button>
+            <button
+              type="button"
+              className="btn-toggle btn-on"
+              onClick={() => onSubmit(form)}
+              disabled={loading}
+            >
+              {loading ? 'Сохранение...' : 'Сохранить'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
 import React from 'react';
 import DeviceCard from './DeviceCard';
 
-function DeviceGrid({ devices, onToggleDevice, onAddDevice, loading }) {
+function DeviceGrid({ devices, onToggleDevice, onDeleteDevice, onAddDevice }) {
   if (!devices || devices.length === 0) {
     return (
       <div className="empty-state">
-        <div className="empty-icon">📱</div>
+        <div className="empty-icon"></div>
         <h2>Нет устройств</h2>
         <p>Добавьте первое устройство для начала мониторинга</p>
 
@@ -25,7 +25,7 @@ function DeviceGrid({ devices, onToggleDevice, onAddDevice, loading }) {
             key={device.id}
             device={device}
             onToggle={onToggleDevice}
-            loading={loading}
+            onDelete={onDeleteDevice}
           />
         ))}
 

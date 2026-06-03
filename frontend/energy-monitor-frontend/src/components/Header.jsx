@@ -1,24 +1,32 @@
 import React from 'react';
 
-function Header({ onRefresh, loading }) {
+function Header({ activeTab, onTabChange }) {
+  const tabs = [
+    { id: 'dashboard', label: 'Панель управления' },
+    { id: 'history', label: 'История' },
+    { id: 'savings', label: 'Экономия' },
+  ];
+
   return (
     <div className="header">
       <div className="header-content">
         <h1 className="header-title">
-          Energy loss monitoring system
+          ELMS
         </h1>
-        <p className="header-subtitle">
-          Система мониторинга энергопотерь
-        </p>
+        <div className="navigation">
+          <div className="nav-tabs">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => onTabChange(tab.id)}
+              >
+                <span className="nav-label">{tab.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
-      <button
-        className={`btn-refresh ${loading ? 'loading' : ''}`}
-        onClick={onRefresh}
-        disabled={loading}
-        title="Обновить данные"
-      >
-        {loading ? '⏳' : '🔄'} Обновить
-      </button>
     </div>
   );
 }

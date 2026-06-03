@@ -72,16 +72,16 @@ function HistoricalData() {
         )}
 
         <button className="btn-primary" onClick={fetchHistoricalData} disabled={loading}>
-          {loading ? '⏳ Загрузка...' : '🔍 Поиск'}
+          {loading ? 'Загрузка...' : 'Поиск'}
         </button>
       </div>
 
       <div className="export-controls">
         <button className="btn-export" onClick={() => handleExport('csv')}>
-          📥 Экспорт CSV
+          CSV
         </button>
         <button className="btn-export" onClick={() => handleExport('json')}>
-          📥 Экспорт JSON
+          JSON
         </button>
       </div>
 

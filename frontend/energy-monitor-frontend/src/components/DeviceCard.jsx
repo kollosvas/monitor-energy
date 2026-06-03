@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-function DeviceCard({ device, onToggle, loading }) {
+function DeviceCard({ device, onToggle, onDelete, loading }) {
   const [toggling, setToggling] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleToggle = async () => {
     setToggling(true);
@@ -9,25 +10,59 @@ function DeviceCard({ device, onToggle, loading }) {
     setToggling(false);
   };
 
+  const handleDelete = async () => {
+    await onDelete(device.id);
+    setConfirmDelete(false);
+  };
+
   const isOnline = device.status === 'online';
   const isOn = device.power_state === 'on';
   const powerPercent = (device.current_power / device.rated_power) * 100;
+
+  if (confirmDelete) {
+    return (
+      <div className="device-card" style={{ border: '2px solid #ef4444', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, minHeight: 200 }}>
+        <div style={{ fontSize: 24 }}>🗑️</div>
+        <div style={{ fontWeight: 600 }}>Удалить {device.name}?</div>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button onClick={handleDelete} style={{ padding: '8px 20px', borderRadius: 8, border: 'none', background: '#ef4444', color: '#fff', cursor: 'pointer', fontWeight: 500 }}>
+            Да, удалить
+          </button>
+          <button onClick={() => setConfirmDelete(false)} style={{ padding: '8px 20px', borderRadius: 8, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer' }}>
+            Отмена
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`device-card ${!isOnline ? 'offline' : ''}`}>
       <div className="device-header">
         <h3 className="device-name">{device.name}</h3>
-        <span className={`device-badge ${isOnline ? 'online' : 'offline'}`}>
-          {isOnline ? '🟢 Online' : '🔴 Offline'}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <button
+            onClick={() => setConfirmDelete(true)}
+            title="Удалить устройство"
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontSize: 16, padding: '2px 6px', opacity: 0.5, color: '#ef4444',
+            }}
+          >
+            🗑️
+          </button>
+        </div>
       </div>
 
       <div className="device-type">{device.device_type}</div>
 
       <div className="device-status-info">
         <span className={`power-status ${isOn ? 'on' : 'off'}`}>
-          {isOn ? '✅ Включен' : '❌ Выключен'}
+          {isOn ? 'Включен' : 'Выключен'}
         </span>
+        <span className={`device-badge ${isOnline ? 'online' : 'offline'}`}>
+            {isOnline ? '🟢 В сети' : '🔴 Не в сети'}
+          </span>
       </div>
 
       <div className="device-power-display">
@@ -68,7 +103,7 @@ function DeviceCard({ device, onToggle, loading }) {
         disabled={toggling || !isOnline}
         title={!isOnline ? 'Устройство оффлайн' : ''}
       >
-        {toggling ? '⏳' : isOn ? '⏹ Выключить' : '▶ Включить'}
+        {toggling ? '' : isOn ? 'Выключить' : 'Включить'}
       </button>
     </div>
   );

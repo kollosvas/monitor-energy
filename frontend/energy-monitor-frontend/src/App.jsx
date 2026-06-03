@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Header from './components/Header';
 import StatCard from './components/StatCard';
 import DeviceGrid from './components/DeviceGrid';
-import Navigation from './components/Navigation';
-import RealTimeAnalytics from './components/Analytics/RealTimeAnalytics';
+import Header from './components/Header';
 import HistoricalData from './components/Analytics/HistoricalData';
-import Schedule from './components/Analytics/Schedule';
+import Savings from './components/Analytics/Savings';
+import AnomalyBanner from './components/AnomalyBanner';
 import { devicesAPI, energyAPI } from './services/api';
 import AddDeviceModal from './components/AddDeviceModal';
+import TimeZoneSelector from './components/TimeSelectZone';
 
 
 function App() {
@@ -22,7 +22,6 @@ function App() {
     avgPower: 0,
   });
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [addLoading, setAddLoading] = useState(false);
@@ -30,33 +29,29 @@ function App() {
 
   const fetchData = async () => {
     try {
-      setLoading(true);
       setError(null);
 
-      const [devicesRes, currentRes, todayRes] = await Promise.all([
-        devicesAPI.getAll(),
+      const [currentRes, todayRes] = await Promise.all([
         energyAPI.getCurrent(),
         energyAPI.getToday(),
       ]);
 
-      const devicesList = devicesRes.data.results;
       const currentData = currentRes.data;
       const todayData = todayRes.data;
+      const devicesList = currentData.devices;
 
       setDevices(devicesList);
       setStats({
         totalPower: currentData.total_power,
         todayEnergy: todayData.total_energy,
         todayCost: todayData.total_cost,
-        activeDevices: currentData.devices.filter(d => d.power_state === 'on').length,
-        peakPower: Math.max(...currentData.devices.map(d => d.current_power), 0),
-        avgPower: currentData.total_power / currentData.devices.length,
+        activeDevices: devicesList.filter(d => d.power_state === 'on').length,
+        peakPower: Math.max(...devicesList.map(d => d.current_power), 0),
+        avgPower: currentData.total_power / (devicesList.length || 1),
       });
     } catch (err) {
       console.error('Ошибка загрузки данных:', err);
       setError('Ошибка подключения к серверу. Проверьте что Django запущен на http://localhost:8000');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -91,6 +86,16 @@ function App() {
     }
   };
 
+  const handleDeleteDevice = async (deviceId) => {
+    try {
+      await devicesAPI.delete(deviceId);
+      await fetchData();
+    } catch (err) {
+      console.error('Ошибка при удалении устройства:', err);
+      setError('Ошибка при удалении устройства');
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -102,88 +107,83 @@ function App() {
 
   return (
     <div className="App">
-      <Header onRefresh={fetchData} loading={loading} />
-
+      <Header activeTab={activeTab} onTabChange={setActiveTab} />
       {error && (
         <div className="error-banner">
           <div className="error-content">
-            <span className="error-icon">⚠️</span>
             <span className="error-text">{error}</span>
             <button className="error-close" onClick={() => setError(null)}>✕</button>
           </div>
         </div>
       )}
 
-      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-
       <div className="container">
+        <div className="app-context">
+          <TimeZoneSelector />
+        </div>
         {activeTab === 'dashboard' && (
           <>
-            <div className="stats-section">
-              <h2 className="section-title">Статистика</h2>
-              <div className="stats-grid">
-                <StatCard
-                  title="Потребление сейчас"
-                  value={stats.totalPower}
-                  unit="кВт"
-                  icon="⚡"
-                  color="#667eea"
-                />
-                <StatCard
-                  title="За сегодня"
-                  value={stats.todayEnergy}
-                  unit="кВт·ч"
-                  icon="📊"
-                  color="#10b981"
-                />
-                <StatCard
-                  title="Стоимость сегодня"
-                  value={Math.round(stats.todayCost)}
-                  unit="₽"
-                  icon="💰"
-                  color="#f59e0b"
-                />
-                <StatCard
-                  title="Активные устройства"
-                  value={stats.activeDevices}
-                  unit={`из ${devices.length}`}
-                  icon="🔌"
-                  color="#ef4444"
-                />
-                <StatCard
-                  title="Пиковое потребление"
-                  value={stats.peakPower}
-                  unit="кВт"
-                  icon="📈"
-                  color="#8b5cf6"
-                />
-                <StatCard
-                  title="Среднее потребление"
-                  value={stats.avgPower}
-                  unit="кВт"
-                  icon="📉"
-                  color="#06b6d4"
-                />
+            <div className="section-info">
+              <div className="info-content">
+                Добро пожаловать! <br /><br />
+                В приложении вы сможете следить за потреблением энергии подключенными устройствами, управлять их энергопотреблением, получать полезные советы и уведомления о важных событиях.
+              </div>
+              <AnomalyBanner />
+              <div className="stats-section">
+                <h2 className="section-title">Статистика</h2>
+                <div className="stats-grid">
+                  <StatCard
+                    title="Потребление сейчас"
+                    value={stats.totalPower}
+                    unit="кВт"
+                    color="#667eea"
+                  />
+                  <StatCard
+                    title="За сегодня"
+                    value={stats.todayEnergy}
+                    unit="кВт·ч"
+                    color="#10b981"
+                  />
+                  <StatCard
+                    title="Стоимость сегодня"
+                    value={Math.round(stats.todayCost)}
+                    unit="₽"
+                    color="#f59e0b"
+                  />
+                  <StatCard
+                    title="Активные устройства"
+                    value={stats.activeDevices}
+                    unit={`из ${devices.length}`}
+                    color="#ef4444"
+                  />
+                  <StatCard
+                    title="Пиковое потребление"
+                    value={stats.peakPower}
+                    unit="кВт"
+                    color="#8b5cf6"
+                  />
+                  <StatCard
+                    title="Среднее потребление"
+                    value={stats.avgPower}
+                    unit="кВт"
+                    color="#06b6d4"
+                  />
+                </div>
               </div>
             </div>
 
             <DeviceGrid
               devices={devices}
               onToggleDevice={handleToggleDevice}
+              onDeleteDevice={handleDeleteDevice}
               onAddDevice={handleAddDeviceClick}
-              loading={loading}
             />
 
           </>
         )}
 
-        {activeTab === 'analytics' && <RealTimeAnalytics />}
         {activeTab === 'history' && <HistoricalData />}
-        {activeTab === 'schedule' && (
-          <>
-            <Schedule />
-          </>
-        )}
+        {activeTab === 'savings' && <Savings />}
       </div>
 
       <footer className="footer">
